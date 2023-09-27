@@ -284,6 +284,7 @@ function render(timestamp) {
 
   gPush();
   gRotate(fishRotation[1], 0, 1, 0);
+  gScale(0.65, 0.65, 0.65);
   fishRotation[1] = fishRotation[1] + 90 * dt;
   {
     {
@@ -294,9 +295,60 @@ function render(timestamp) {
       drawSphere();
       gPop();
     }
+    {
+      // body
+      gPush();
+      gTranslate(0, 0, -3);
+      gScale(2, 2, 6);
+      setColor(vec4(1, 0, 0, 1));
+      drawCone();
+      {
+        // head
+        gPush();
+        gRotate(180, 1, 0, 0);
+        gTranslate(0, 0, 0.66);
+        gScale(1, 1, 1 / 3);
+        setColor(vec4(0.5, 0.5, 0.5, 1));
+        drawCone();
+        {
+          // eyes
+          gPush();
+          gTranslate(0.5, -0.5, 0);
+          gScale(0.2, 0.2, 0.2);
+          setColor(vec4(0, 0, 0, 1));
+          drawSphere();
+          {
+            gPush();
+            gTranslate(0, 0, 1);
+            gScale(0.3, 0.3, 0.3);
+            setColor(vec4(1, 1, 1, 1));
+            drawSphere();
+            gPop();
+          }
+          gPop();
+        }
+        {
+          // eyes
+          gPush();
+          gTranslate(-0.5, -0.5, 0);
+          gScale(0.2, 0.2, 0.2);
+          setColor(vec4(0, 0, 0, 1));
+          drawSphere();
+          {
+            gPush();
+            gTranslate(0, 0, 1);
+            gScale(0.3, 0.3, 0.3);
+            setColor(vec4(1, 1, 1, 1));
+            drawSphere();
+            gPop();
+          }
+          gPop();
+        }
+        gPop();
+      }
+      gPop();
+    }
     // tail
-    // Two cones rotated 90 degrees from each other
-    // Bottom one is half as long
     {
       gPush();
       {
