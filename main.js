@@ -269,127 +269,65 @@ function render(timestamp) {
 
   gPush();
   gTranslate(0, -5, 0);
-  gScale(6, 1.5, 0.5);
-  gPush();
   {
+    gPush();
+    gScale(6, 1.5, 0.5);
     setColor(vec4(0.1, 0.1, 0.1, 1.0));
     drawCube();
-  }
-  gPop();
-  gPop();
-
-  /////////////////
-  // ROCK1 ////////
-  /////////////////
-
-  gPush();
-  // Put the sphere where it should be!
-  gTranslate(0, -2.75, 0);
-  gScale(0.75, 0.75, 0.75);
-  gPush();
-  {
-    // Draw the sphere!
-    setColor(rockColor);
-    drawSphere();
-
-    /////////////////
-    // ROCK2/////////
-    /////////////////
-
-    gPush();
-    // Put the sphere where it should be!
-    gTranslate(-1.45, -0.55, 0);
-    gScale(0.45, 0.45, 0.45);
-    gPush();
-    {
-      // Draw the sphere!
-      setColor(rockColor);
-      drawSphere();
-    }
-    gPop();
     gPop();
   }
   gPop();
-  gPop();
 
-  //////////////
-  // FISH //////
-  //////////////
+  /////////////////
+  // FISH ///////
+  /////////////////
 
-  // head
   gPush();
-  gPush();
+  gRotate(fishRotation[1], 0, 1, 0);
+  fishRotation[1] = fishRotation[1] + 90 * dt;
   {
-    setColor(vec4(1, 1, 1, 1));
-    fishRotation[1] = fishRotation[1] + 90 * dt;
-    gRotate(fishRotation[1], 0, 1, 0);
-    drawCone();
-
-    // body
-    gPush();
-    gRotate(180, 0, 1, 0);
-    gScale(1, 1, 3);
-    gTranslate(0, 0, 0.67);
     {
-      setColor(vec4(1, 0, 1, 1));
-      drawCone();
-
-      gPop();
-      // tail top
+      //reference
       gPush();
-      // gScale(0.5, 0.5, 0.5);
-      gTranslate(0, 0.5, -4);
-      gRotate(230, 1, 0, 0);
+      gScale(0.5, 0.5, 0.5);
+      setColor(vec4(0, 0, 0, 1));
+      drawSphere();
+      gPop();
+    }
+    // tail
+    // Two cones rotated 90 degrees from each other
+    // Bottom one is half as long
+    {
+      gPush();
       {
-        setColor(vec4(1, 1, 1, 1));
+        gPush();
+        gRotate(45, 1, 0, 0);
+        gTranslate(0, 0, 1.5);
+        gScale(1, 1, 2);
+        setColor(vec4(1, 0, 0, 1));
         drawCone();
+        gPop();
+      }
+      {
+        gPush();
+        gRotate(45, -1, 0, 0);
+        gTranslate(0, 0, 2.5);
+        gScale(1, 1, 4);
+        setColor(vec4(1, 0, 0, 1));
+        drawCone();
+        gPop();
       }
       gPop();
     }
+    // {
+    //   gPush();
+    //   gRotate(315, -1, 0, 0);
+    //   setColor(vec4(0, 1, 0, 1));
+    //   drawCone();
+    //   gPop();
+    // }
   }
-
-  // Cube example
-  // gPush();
-  // gTranslate(cubePosition[0], cubePosition[1], cubePosition[2]);
-  // gPush();
-  // {
-  //   setColor(vec4(0.0, 1.0, 0.0, 1.0));
-  //   // Here is an example of integration to rotate the cube around the y axis at 30 degrees per second
-  //   // new cube rotation around y = current cube rotation around y + 30deg/s*dt
-  //   cubeRotation[1] = cubeRotation[1] + 30 * dt;
-  //   // This calls a simple helper function to apply the rotation (theta, x, y, z),
-  //   // where x,y,z define the axis of rotation. Here is is the y axis, (0,1,0).
-  //   gRotate(cubeRotation[1], 0, 1, 0);
-  //   drawCube();
-  // }
-  // gPop();
-  // gPop();
-  //
-  // // Cylinder example
-  // gPush();
-  // gTranslate(cylinderPosition[0], cylinderPosition[1], cylinderPosition[2]);
-  // gPush();
-  // {
-  //   setColor(vec4(0.0, 0.0, 1.0, 1.0));
-  //   cylinderRotation[1] = cylinderRotation[1] + 60 * dt;
-  //   gRotate(cylinderRotation[1], 0, 1, 0);
-  //   drawCylinder();
-  // }
-  // gPop();
-  // gPop();
-  //
-  // // Cone example
-  // gPush();
-  // gTranslate(conePosition[0], conePosition[1], conePosition[2]);
-  // gPush();
-  // {
-  //   setColor(vec4(1.0, 1.0, 0.0, 1.0));
-  //   coneRotation[1] = coneRotation[1] + 90 * dt;
-  //   gRotate(coneRotation[1], 0, 1, 0);
-  //   drawCone();
-  // }
-  // gPop();
-  // gPop();
+  gPop();
 
   if (animFlag) window.requestAnimFrame(render);
 }
