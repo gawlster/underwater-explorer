@@ -49,8 +49,7 @@ var controller;
 var sphereRotation = [0, 0, 0];
 var spherePosition = [-4, 0, 0];
 
-var cubeRotation = [0, 0, 0];
-var cubePosition = [-1, 0, 0];
+var fishRotation = [0, 0, 0];
 
 var cylinderRotation = [0, 0, 0];
 var cylinderPosition = [1.1, 0, 0];
@@ -317,17 +316,13 @@ function render(timestamp) {
   // FISH //////
   //////////////
 
-  let fishRotation = [0, 90, 0];
-
   // head
   gPush();
   gPush();
   {
     setColor(vec4(1, 1, 1, 1));
-    // fishRotation[1] = fishRotation[1] + 90 * dt;
-    cubeRotation[1] = cubeRotation[1] + 1300 * dt;
-    // gRotate(fishRotation[1], 0, 1, 0);
-    gRotate(cubeRotation[1], 1, 0, 0);
+    fishRotation[1] = fishRotation[1] + 90 * dt;
+    gRotate(fishRotation[1], 0, 1, 0);
     drawCone();
 
     // body
@@ -338,6 +333,18 @@ function render(timestamp) {
     {
       setColor(vec4(1, 0, 1, 1));
       drawCone();
+
+      gPop();
+      // tail top
+      gPush();
+      // gScale(0.5, 0.5, 0.5);
+      gTranslate(0, 0.5, -4);
+      gRotate(230, 1, 0, 0);
+      {
+        setColor(vec4(1, 1, 1, 1));
+        drawCone();
+      }
+      gPop();
     }
   }
 
