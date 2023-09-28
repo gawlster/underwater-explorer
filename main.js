@@ -51,6 +51,8 @@ var spherePosition = [-4, 0, 0];
 
 var fishRotation = [0, 0, 0];
 
+var tailRotation = [0, 0, 0];
+
 var cylinderRotation = [0, 0, 0];
 var cylinderPosition = [1.1, 0, 0];
 
@@ -278,23 +280,25 @@ function render(timestamp) {
   }
   gPop();
 
+  {
+    //reference
+    gPush();
+    gScale(0.5, 0.5, 0.5);
+    setColor(vec4(0, 0, 0, 1));
+    drawSphere();
+    gPop();
+  }
+
   /////////////////
   // FISH ///////
   /////////////////
 
   gPush();
   gRotate(fishRotation[1], 0, 1, 0);
-  gScale(0.65, 0.65, 0.65);
+  gScale(0.45, 0.45, 0.45);
+  gTranslate(3, 0, 0);
   fishRotation[1] = fishRotation[1] + 90 * dt;
   {
-    {
-      //reference
-      gPush();
-      gScale(0.5, 0.5, 0.5);
-      setColor(vec4(0, 0, 0, 1));
-      drawSphere();
-      gPop();
-    }
     {
       // body
       gPush();
@@ -351,6 +355,8 @@ function render(timestamp) {
     // tail
     {
       gPush();
+      gRotate(tailRotation[1], 0, 1, 0);
+      tailRotation[1] = Math.cos(timestamp * 0.005 + 0) * 45;
       {
         gPush();
         gRotate(45, 1, 0, 0);
