@@ -1,6 +1,7 @@
 class Seaweed {
   #seaweedColor = vec4(0, 1, 0, 1);
 
+  rotationRandomnessScale;
   #randomRotations;
 
   length;
@@ -8,16 +9,29 @@ class Seaweed {
   strandSize;
   #strandScale;
 
-  constructor(length, amplitude, strandSize) {
+  swaySpeed;
+  #swaySpeedScale;
+
+  constructor({
+    length,
+    amplitude,
+    strandSize,
+    rotationRandomnessScale,
+    swaySpeed,
+  }) {
     this.length = length;
     this.amplitude = amplitude;
     this.strandSize = strandSize;
-    this.#strandScale = this.strandSize * 0.15;
+    this.#strandScale = this.strandSize * 0.25;
+
+    this.rotationRandomnessScale = rotationRandomnessScale;
 
     this.#randomRotations = Array.from({ length }, () =>
-      Math.floor(Math.random() * 20),
+      Math.floor(Math.random() * rotationRandomnessScale * 20),
     ).map((v, i) => (i % 2 === 0 ? -1 * v : v));
-    console.log(this.#randomRotations);
+
+    this.swaySpeed = swaySpeed;
+    this.#swaySpeedScale = swaySpeed / 1000;
   }
 
   draw(dt, timestamp) {
@@ -38,7 +52,8 @@ class Seaweed {
   #drawStrand(timestamp, i) {
     gPush();
     gRotate(
-      Math.cos(timestamp * 0.001 - i / 5) * 2.5 + this.#randomRotations[i],
+      Math.cos(timestamp * this.#swaySpeedScale - i / 5) * 2.5 +
+        this.#randomRotations[i],
       0,
       0,
       1,

@@ -220,7 +220,13 @@ function gPush() {
 
 const ground = new Ground();
 const rocks = new Rocks();
-const seaweed = new Seaweed(10, 1, 2);
+const seaweed = new Seaweed({
+  length: 10,
+  swaySpeed: 1,
+  rotationRandomnessScale: 1,
+  amplitude: 1,
+  strandSize: 1,
+});
 const fish = new Fish(0.75);
 const diver = new Diver();
 
