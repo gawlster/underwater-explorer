@@ -232,6 +232,8 @@ function gPush() {
   MS.push(modelMatrix);
 }
 
+const fish = new Fish(1);
+
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
@@ -250,7 +252,7 @@ function render(timestamp) {
   // set all the matrices
   setAllMatrices();
 
-  if (animFlag || true) {
+  if (animFlag) {
     // dt is the change in time or delta time from the last frame to this one
     // in animation typically we have some property or degree of freedom we want to evolve over time
     // For example imagine x is the position of a thing.
@@ -280,14 +282,14 @@ function render(timestamp) {
   }
   gPop();
 
-  {
-    //reference
-    gPush();
-    gScale(0.5, 0.5, 0.5);
-    setColor(vec4(0, 0, 0, 1));
-    drawSphere();
-    gPop();
-  }
+  // {
+  //   //reference
+  //   gPush();
+  //   gScale(0.5, 0.5, 0.5);
+  //   setColor(vec4(0, 0, 0, 1));
+  //   drawSphere();
+  //   gPop();
+  // }
 
   /////////////////
   // FISH ///////
@@ -297,94 +299,8 @@ function render(timestamp) {
   gRotate(fishRotation[1], 0, 1, 0);
   gScale(0.45, 0.45, 0.45);
   gTranslate(3, 0, 0);
-  fishRotation[1] = fishRotation[1] + 90 * dt;
-  {
-    {
-      // body
-      gPush();
-      gTranslate(0, 0, -3);
-      gScale(2, 2, 6);
-      setColor(vec4(1, 0, 0, 1));
-      drawCone();
-      {
-        // head
-        gPush();
-        gRotate(180, 1, 0, 0);
-        gTranslate(0, 0, 0.66);
-        gScale(1, 1, 1 / 3);
-        setColor(vec4(0.5, 0.5, 0.5, 1));
-        drawCone();
-        {
-          // eyes
-          gPush();
-          gTranslate(0.5, -0.5, 0);
-          gScale(0.2, 0.2, 0.2);
-          setColor(vec4(0, 0, 0, 1));
-          drawSphere();
-          {
-            gPush();
-            gTranslate(0, 0, 1);
-            gScale(0.3, 0.3, 0.3);
-            setColor(vec4(1, 1, 1, 1));
-            drawSphere();
-            gPop();
-          }
-          gPop();
-        }
-        {
-          // eyes
-          gPush();
-          gTranslate(-0.5, -0.5, 0);
-          gScale(0.2, 0.2, 0.2);
-          setColor(vec4(0, 0, 0, 1));
-          drawSphere();
-          {
-            gPush();
-            gTranslate(0, 0, 1);
-            gScale(0.3, 0.3, 0.3);
-            setColor(vec4(1, 1, 1, 1));
-            drawSphere();
-            gPop();
-          }
-          gPop();
-        }
-        gPop();
-      }
-      gPop();
-    }
-    // tail
-    {
-      gPush();
-      gRotate(tailRotation[1], 0, 1, 0);
-      tailRotation[1] = Math.cos(timestamp * 0.005 + 0) * 45;
-      {
-        gPush();
-        gRotate(45, 1, 0, 0);
-        gTranslate(0, 0, 1.5);
-        gScale(1, 1, 2);
-        setColor(vec4(1, 0, 0, 1));
-        drawCone();
-        gPop();
-      }
-      {
-        gPush();
-        gRotate(45, -1, 0, 0);
-        gTranslate(0, 0, 2.5);
-        gScale(1, 1, 4);
-        setColor(vec4(1, 0, 0, 1));
-        drawCone();
-        gPop();
-      }
-      gPop();
-    }
-    // {
-    //   gPush();
-    //   gRotate(315, -1, 0, 0);
-    //   setColor(vec4(0, 1, 0, 1));
-    //   drawCone();
-    //   gPop();
-    // }
-  }
+  fish.draw(dt, timestamp);
+  fishRotation[1] = fishRotation[1] - 45 * dt;
   gPop();
 
   if (animFlag) window.requestAnimFrame(render);
