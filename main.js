@@ -220,7 +220,7 @@ function gPush() {
 
 const ground = new Ground();
 const rocks = new Rocks();
-const seaweed1 = new Seaweed(8, 1, 1.2);
+const seaweed = new Seaweed(10, 1, 2);
 const fish = new Fish(0.75);
 const diver = new Diver();
 
@@ -250,10 +250,18 @@ function render(timestamp) {
   rocks.drawDefaultRockPair(dt, timestamp);
   gPop();
 
-  // gPush();
-  // gTranslate(0, -2.95, 0);
-  // seaweed1.draw(dt, timestamp);
-  // gPop();
+  gPush();
+  gTranslate(0, -2.5, 0);
+  seaweed.draw(dt, timestamp);
+  gPush();
+  gTranslate(-0.75, -0.5, 0);
+  seaweed.draw(dt, timestamp);
+  gPop();
+  gPush();
+  gTranslate(0.7, -1, 0);
+  seaweed.draw(dt, timestamp);
+  gPop();
+  gPop();
 
   gPush();
   gTranslate(0, Math.cos(timestamp * 0.001) / 2, 0);

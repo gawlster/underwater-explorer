@@ -1,6 +1,8 @@
 class Seaweed {
   #seaweedColor = vec4(0, 1, 0, 1);
 
+  #randomRotations;
+
   length;
   amplitude;
   strandSize;
@@ -11,41 +13,45 @@ class Seaweed {
     this.amplitude = amplitude;
     this.strandSize = strandSize;
     this.#strandScale = this.strandSize * 0.15;
+
+    this.#randomRotations = Array.from({ length }, () =>
+      Math.floor(Math.random() * 20),
+    ).map((v, i) => (i % 2 === 0 ? -1 * v : v));
+    console.log(this.#randomRotations);
   }
 
   draw(dt, timestamp) {
     gPush();
+    gScale(this.#strandScale, this.#strandScale, this.#strandScale);
+    setColor(this.#seaweedColor);
     for (let i = 0; i < this.length; i++) {
       gPush();
-      gTranslate(0, i * this.#strandScale * 4, 0);
-      gTranslate(
-        (Math.cos(timestamp * 0.001 - i / 10) * i * this.amplitude) / 5,
-        0,
-        0,
-      );
-      gTranslate(
-        0,
-        Math.abs(Math.sin(timestamp * 0.001 - i / 10) * i * this.amplitude) /
-          30,
-        0,
-      );
-      gRotate(
-        -Math.cos(timestamp * 0.001 - i / 10) * i * this.amplitude * 2,
-        0,
-        0,
-        1,
-      );
-      gScale(this.#strandScale, this.#strandScale, this.#strandScale);
-      this.#drawStrand();
+      this.#drawStrand(timestamp, i);
+    }
+    for (let i = 0; i < this.length; i++) {
+      gPop();
       gPop();
     }
     gPop();
   }
 
-  #drawStrand() {
-    gTranslate(0, 1, 0);
-    gScale(1, 2, 1);
-    setColor(this.#seaweedColor);
-    drawSphere();
+  #drawStrand(timestamp, i) {
+    gPush();
+    gRotate(
+      Math.cos(timestamp * 0.001 - i / 5) * 2.5 + this.#randomRotations[i],
+      0,
+      0,
+      1,
+    );
+    {
+      gPush();
+      gTranslate(0, 1, 0);
+      gPush();
+      gScale(0.5, 1, 0.5);
+      drawSphere();
+      gPop();
+      gPop();
+    }
+    gTranslate(0, 2, 0);
   }
 }
