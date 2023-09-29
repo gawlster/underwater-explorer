@@ -221,9 +221,8 @@ function gPush() {
 const ground = new Ground();
 const rocks = new Rocks();
 const seaweed1 = new Seaweed(8, 1, 1.2);
-const seaweed2 = new Seaweed(6, 1.4, 0.9);
-const seaweed3 = new Seaweed(7, 0.8);
 const fish = new Fish(0.75);
+const diver = new Diver();
 
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -251,32 +250,32 @@ function render(timestamp) {
   rocks.drawDefaultRockPair(dt, timestamp);
   gPop();
 
-  gPush();
-  gTranslate(0, -2.95, 0);
-  seaweed1.draw(dt, timestamp);
-  gPop();
-
-  gPush();
-  gTranslate(-0.5, -2.95, 0);
-  seaweed2.draw(dt, timestamp);
-  gPop();
-
   // gPush();
-  // gTranslate(0.5, -2.95, 0);
-  // seaweed3.draw(dt, timestamp);
+  // gTranslate(0, -2.95, 0);
+  // seaweed1.draw(dt, timestamp);
   // gPop();
 
   gPush();
-  gTranslate(0, Math.cos(timestamp * 0.001) * 1, 0);
+  gTranslate(0, Math.cos(timestamp * 0.001) / 2, 0);
   {
     gPush();
     gRotate(fishRotation, 0, 1, 0);
-    gScale(0.45, 0.45, 0.45);
-    gTranslate(8, 0, 0);
+    gScale(0.4, 0.4, 0.4);
+    gTranslate(5, -2, 0);
     fish.draw(dt, timestamp);
     fishRotation = fishRotation - (45 * dt) / 2;
     gPop();
   }
+  gPop();
+
+  gPush();
+  gTranslate(
+    3 + Math.cos(timestamp * 0.0008) / 2,
+    Math.cos(timestamp * 0.0005) / 2,
+    0,
+  );
+  gScale(0.5, 0.5, 0.5);
+  diver.draw(dt, timestamp);
   gPop();
 
   if (animFlag) window.requestAnimFrame(render);
