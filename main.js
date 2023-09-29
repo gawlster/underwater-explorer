@@ -232,8 +232,9 @@ function gPush() {
   MS.push(modelMatrix);
 }
 
-const fish = new Fish(1);
+const ground = new Ground();
 const rocks = new Rocks();
+const fish = new Fish(1);
 
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -249,19 +250,10 @@ function render(timestamp) {
     prevTime = timestamp;
   }
 
-  /////////////////
-  // GROUND ///////
-  /////////////////
-
   gPush();
   gTranslate(0, -5, 0);
-  {
-    gPush();
-    gScale(6, 1.5, 0.5);
-    setColor(vec4(0.1, 0.1, 0.1, 1.0));
-    drawCube();
-    gPop();
-  }
+  gScale(6, 1.5, 0.5);
+  ground.draw();
   gPop();
 
   gPush();
