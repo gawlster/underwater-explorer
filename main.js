@@ -233,39 +233,21 @@ function gPush() {
 }
 
 const fish = new Fish(1);
+const rocks = new Rocks();
 
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
   eye = vec3(0, 0, 10);
   MS = []; // Initialize modeling matrix stack
-
-  // initialize the modeling matrix to identity
   modelMatrix = mat4();
-
-  // set the camera matrix
   viewMatrix = lookAt(eye, at, up);
-
-  // set the projection matrix
   projectionMatrix = ortho(left, right, bottom, ytop, near, far);
-
-  // set all the matrices
   setAllMatrices();
 
   if (animFlag) {
-    // dt is the change in time or delta time from the last frame to this one
-    // in animation typically we have some property or degree of freedom we want to evolve over time
-    // For example imagine x is the position of a thing.
-    // To get the new position of a thing we do something called integration
-    // the simpelst form of this looks like:
-    // x_new = x + v*dt
-    // That is the new position equals the current position + the rate of of change of that position (often a velocity or speed), times the change in time
-    // We can do this with angles or positions, the whole x,y,z position or just one dimension. It is up to us!
     dt = (timestamp - prevTime) / 1000.0;
     prevTime = timestamp;
   }
-
-  const rockColor = vec4(0.3, 0.3, 0.3, 1.0);
 
   /////////////////
   // GROUND ///////
@@ -280,6 +262,12 @@ function render(timestamp) {
     drawCube();
     gPop();
   }
+  gPop();
+
+  gPush();
+  gTranslate(0, -3, 0);
+  gScale(0.5, 0.5, 0.5);
+  rocks.drawDefaultRockPair(dt, timestamp);
   gPop();
 
   // {
