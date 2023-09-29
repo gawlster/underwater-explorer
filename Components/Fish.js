@@ -80,7 +80,7 @@ class Fish {
   #drawTail(timestamp) {
     gRotate(this.#tailRotation, 0, 1, 0);
     this.#tailRotation =
-      Math.cos(timestamp * (this.tailFlappingSpeed / 100) + 0) * 30;
+      Math.cos(timestamp * (this.tailFlappingSpeed / 100)) * 30;
     {
       gPush();
       gRotate(45, 1, 0, 0);

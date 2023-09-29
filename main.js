@@ -43,21 +43,7 @@ var resetTimerFlag = true;
 var animFlag = false;
 var controller;
 
-// These are used to store the current state of objects.
-// In animation it is often useful to think of an object as having some DOF
-// Then the animation is simply evolving those DOF over time.
-var sphereRotation = [0, 0, 0];
-var spherePosition = [-4, 0, 0];
-
-var fishRotation = [0, 0, 0];
-
-var tailRotation = [0, 0, 0];
-
-var cylinderRotation = [0, 0, 0];
-var cylinderPosition = [1.1, 0, 0];
-
-var coneRotation = [0, 0, 0];
-var conePosition = [3, 0, 0];
+let fishRotation = 0;
 
 // Setting the colour which is needed during illumination of a surface
 function setColor(c) {
@@ -234,7 +220,10 @@ function gPush() {
 
 const ground = new Ground();
 const rocks = new Rocks();
-const fish = new Fish(1);
+const seaweed1 = new Seaweed(8, 1, 1.2);
+const seaweed2 = new Seaweed(6, 1.4, 0.9);
+const seaweed3 = new Seaweed(7, 0.8);
+const fish = new Fish(0.75);
 
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -262,25 +251,32 @@ function render(timestamp) {
   rocks.drawDefaultRockPair(dt, timestamp);
   gPop();
 
-  // {
-  //   //reference
-  //   gPush();
-  //   gScale(0.5, 0.5, 0.5);
-  //   setColor(vec4(0, 0, 0, 1));
-  //   drawSphere();
-  //   gPop();
-  // }
-
-  /////////////////
-  // FISH ///////
-  /////////////////
+  gPush();
+  gTranslate(0, -2.95, 0);
+  seaweed1.draw(dt, timestamp);
+  gPop();
 
   gPush();
-  gRotate(fishRotation[1], 0, 1, 0);
-  gScale(0.45, 0.45, 0.45);
-  gTranslate(3, 0, 0);
-  fish.draw(dt, timestamp);
-  fishRotation[1] = fishRotation[1] - 45 * dt;
+  gTranslate(-0.5, -2.95, 0);
+  seaweed2.draw(dt, timestamp);
+  gPop();
+
+  // gPush();
+  // gTranslate(0.5, -2.95, 0);
+  // seaweed3.draw(dt, timestamp);
+  // gPop();
+
+  gPush();
+  gTranslate(0, Math.cos(timestamp * 0.001) * 1, 0);
+  {
+    gPush();
+    gRotate(fishRotation, 0, 1, 0);
+    gScale(0.45, 0.45, 0.45);
+    gTranslate(8, 0, 0);
+    fish.draw(dt, timestamp);
+    fishRotation = fishRotation - (45 * dt) / 2;
+    gPop();
+  }
   gPop();
 
   if (animFlag) window.requestAnimFrame(render);
