@@ -1,18 +1,25 @@
 class Diver {
   #bodyColor = vec4(1, 1, 1, 1);
 
-  constructor() {}
+  rotation;
+
+  kickingSpeed;
+  #kickingSpeedScale;
+
+  constructor({ rotation, kickingSpeed }) {
+    this.rotation = rotation;
+    this.kickingSpeed = kickingSpeed;
+    this.#kickingSpeedScale = kickingSpeed / 1000;
+  }
 
   draw(dt, timestamp) {
     gPush();
-    gRotate(340, 0, 1, 0);
+    gRotate(-this.rotation, 0, 1, 0);
     {
       gPush();
       {
         gPush();
-        gScale(1, 1.2, 0.3);
-        setColor(this.#bodyColor);
-        drawCube();
+        this.#drawBody();
         gPop();
       }
       {
@@ -39,6 +46,12 @@ class Diver {
     gPop();
   }
 
+  #drawBody() {
+    gScale(1, 1.2, 0.3);
+    setColor(this.#bodyColor);
+    drawCube();
+  }
+
   #drawHead() {
     setColor(this.#bodyColor);
     drawSphere();
@@ -48,8 +61,8 @@ class Diver {
     gTranslate(0, 0.3, 0);
     gRotate(
       isOffset
-        ? Math.cos(timestamp * 0.001) * 15 + 40
-        : -Math.cos(timestamp * 0.001) * 15 + 40,
+        ? Math.cos(timestamp * this.#kickingSpeedScale) * 15 + 40
+        : -Math.cos(timestamp * this.#kickingSpeedScale) * 15 + 40,
       1,
       0,
       0,
@@ -69,8 +82,8 @@ class Diver {
         gTranslate(0, -0.4, 0);
         gRotate(
           isOffset
-            ? Math.cos(timestamp * 0.001) * 10 + 20
-            : -Math.cos(timestamp * 0.001) * 10 + 20,
+            ? Math.cos(timestamp * this.#kickingSpeedScale) * 10 + 20
+            : -Math.cos(timestamp * this.#kickingSpeedScale) * 10 + 20,
           1,
           0,
           0,

@@ -227,22 +227,20 @@ const seaweed = new Seaweed({
   amplitude: 1,
   strandSize: 1,
 });
-const fish = new Fish(0.75);
-const diver = new Diver();
+const fish = new Fish({ tailFlappingSpeed: 1 });
+const diver = new Diver({ rotation: 25, kickingSpeed: 5 });
 
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   eye = vec3(0, 0, 10);
-  MS = []; // Initialize modeling matrix stack
+  MS = [];
   modelMatrix = mat4();
   viewMatrix = lookAt(eye, at, up);
   projectionMatrix = ortho(left, right, bottom, ytop, near, far);
   setAllMatrices();
 
-  if (animFlag) {
-    dt = (timestamp - prevTime) / 1000.0;
-    prevTime = timestamp;
-  }
+  dt = (timestamp - prevTime) / 1000;
+  prevTime = timestamp;
 
   gPush();
   gTranslate(0, -5, 0);
@@ -257,16 +255,20 @@ function render(timestamp) {
   gPop();
 
   gPush();
-  gTranslate(0, -2.5, 0);
+  gTranslate(0, -2.5, -1);
   seaweed.draw(dt, timestamp);
-  gPush();
-  gTranslate(-0.75, -0.5, 0);
-  seaweed.draw(dt, timestamp);
-  gPop();
-  gPush();
-  gTranslate(0.7, -1, 0);
-  seaweed.draw(dt, timestamp);
-  gPop();
+  {
+    gPush();
+    gTranslate(-0.75, -0.5, 0);
+    seaweed.draw(dt, timestamp);
+    gPop();
+  }
+  {
+    gPush();
+    gTranslate(0.7, -1, 0);
+    seaweed.draw(dt, timestamp);
+    gPop();
+  }
   gPop();
 
   gPush();
@@ -292,7 +294,7 @@ function render(timestamp) {
   diver.draw(dt, timestamp);
   gPop();
 
-  if (animFlag) window.requestAnimFrame(render);
+  window.requestAnimFrame(render);
 }
 
 // A simple camera controller which uses an HTML element as the event
