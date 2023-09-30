@@ -3,6 +3,7 @@ class Seaweed {
 
   rotationRandomnessScale;
   #randomRotations;
+  #randomTranslations;
 
   length;
   amplitude;
@@ -28,6 +29,10 @@ class Seaweed {
 
     this.#randomRotations = Array.from({ length }, () =>
       Math.floor(Math.random() * rotationRandomnessScale * 20),
+    ).map((v, i) => (i % 2 === 0 ? -1 * v : v));
+
+    this.#randomTranslations = Array.from({ length }, () =>
+      Math.floor((Math.random() * rotationRandomnessScale) / 2),
     ).map((v, i) => (i % 2 === 0 ? -1 * v : v));
 
     this.swaySpeed = swaySpeed;
@@ -60,7 +65,7 @@ class Seaweed {
     );
     {
       gPush();
-      gTranslate(0, 1, 0);
+      gTranslate(this.#randomTranslations[i], 1, 0);
       gPush();
       gScale(0.5, 1, 0.5);
       drawSphere();

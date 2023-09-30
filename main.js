@@ -223,12 +223,12 @@ const rocks = new Rocks();
 const seaweed = new Seaweed({
   length: 10,
   swaySpeed: 1,
-  rotationRandomnessScale: 1,
+  rotationRandomnessScale: 2,
   amplitude: 1,
   strandSize: 1,
 });
 const fish = new Fish({ tailFlappingSpeed: 1 });
-const diver = new Diver({ rotation: 25, kickingSpeed: 5 });
+const diver = new Diver({ rotation: 25, kickingSpeed: 5, bubbleFrequency: 1 });
 
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
