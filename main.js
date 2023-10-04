@@ -223,12 +223,22 @@ const rocks = new Rocks();
 const seaweed = new Seaweed({
   length: 10,
   swaySpeed: 1,
-  rotationRandomnessScale: 2,
-  amplitude: 1,
+  rotationRandomnessScale: 0.5,
+  amplitude: 0.5,
   strandSize: 1,
 });
 const fish = new Fish({ tailFlappingSpeed: 1 });
-const diver = new Diver({ rotation: 25, kickingSpeed: 5, bubbleFrequency: 1 });
+const diver = new Diver({
+  rotation: 25,
+  kickingSpeed: 5,
+  bubbleFrequency: 0.5,
+});
+const bubbles = [];
+const currentBubbleGroup = [];
+
+let lastBubbleGroupTime = 0;
+let bubbleGroupOffset = 2;
+let bubbleFrequency = 1;
 
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -241,6 +251,42 @@ function render(timestamp) {
 
   dt = (timestamp - prevTime) / 1000;
   prevTime = timestamp;
+
+  const diverTranslations = [
+    3 + Math.cos(timestamp * 0.0008) / 2,
+    Math.cos(timestamp * 0.0005) / 2,
+    0,
+  ];
+
+  if (
+    lastBubbleGroupTime + bubbleGroupOffset <= timestamp &&
+    !currentBubbleGroup.length
+  ) {
+    for (let i = 1; i < Math.random() * 5; i++) {
+      currentBubbleGroup.push({ startTime: timestamp + i * 300 });
+    }
+  }
+
+  if (
+    currentBubbleGroup.length &&
+    currentBubbleGroup[0].startTime <= timestamp
+  ) {
+    bubbles.push(
+      new Bubble({
+        startingTimestamp: timestamp,
+        startingCoordinates: [...diverTranslations],
+        headOffset: diver.getHeadOffset(),
+        bubbleSpeed: 1,
+      }),
+    );
+
+    currentBubbleGroup.shift();
+
+    if (!currentBubbleGroup.length) {
+      lastBubbleGroupTime = timestamp;
+      bubbleGroupOffset = getBubbleGroupOffset();
+    }
+  }
 
   gPush();
   gTranslate(0, -5, 0);
@@ -285,16 +331,31 @@ function render(timestamp) {
   gPop();
 
   gPush();
-  gTranslate(
-    3 + Math.cos(timestamp * 0.0008) / 2,
-    Math.cos(timestamp * 0.0005) / 2,
-    0,
-  );
   gScale(0.5, 0.5, 0.5);
-  diver.draw(dt, timestamp);
+  {
+    gPush();
+    gTranslate(
+      diverTranslations[0],
+      diverTranslations[1],
+      diverTranslations[2],
+    );
+    diver.draw(dt, timestamp);
+    gPop();
+  }
+  {
+    gPush();
+    bubbles.forEach((bubble) => {
+      bubble.draw(timestamp);
+    });
+    gPop();
+  }
   gPop();
 
   window.requestAnimFrame(render);
+}
+
+function getBubbleGroupOffset() {
+  return ((1000 * Math.random()) / bubbleFrequency) * 4;
 }
 
 // A simple camera controller which uses an HTML element as the event

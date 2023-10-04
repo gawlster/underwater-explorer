@@ -6,10 +6,16 @@ class Diver {
   kickingSpeed;
   #kickingSpeedScale;
 
-  constructor({ rotation, kickingSpeed }) {
+  #headOffset = 1.75;
+
+  constructor({ rotation, kickingSpeed, bubbleFrequency }) {
     this.rotation = rotation;
     this.kickingSpeed = kickingSpeed;
     this.#kickingSpeedScale = kickingSpeed / 1000;
+  }
+
+  getHeadOffset() {
+    return this.#headOffset;
   }
 
   draw(dt, timestamp) {
@@ -36,9 +42,9 @@ class Diver {
       }
       {
         gPush();
-        gTranslate(0, 1.75, 0);
+        gTranslate(0, this.#headOffset, 0);
         gScale(0.5, 0.5, 0.5);
-        this.#drawHead();
+        this.#drawHead(timestamp);
         gPop();
       }
       gPop();
@@ -52,7 +58,7 @@ class Diver {
     drawCube();
   }
 
-  #drawHead() {
+  #drawHead(timestamp) {
     setColor(this.#bodyColor);
     drawSphere();
   }
