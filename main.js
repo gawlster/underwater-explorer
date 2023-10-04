@@ -253,7 +253,7 @@ function render(timestamp) {
   prevTime = timestamp;
 
   const diverTranslations = [
-    3 + Math.cos(timestamp * 0.0008) / 2,
+    8 + Math.cos(timestamp * 0.0008) / 2,
     Math.cos(timestamp * 0.0005) / 2,
     0,
   ];
