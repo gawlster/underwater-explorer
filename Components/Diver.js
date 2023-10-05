@@ -1,5 +1,5 @@
 class Diver {
-  #bodyColor = vec4(1, 1, 1, 1);
+  #bodyColor = vec4(0.55, 0.4, 0.6, 1);
 
   rotation;
 
