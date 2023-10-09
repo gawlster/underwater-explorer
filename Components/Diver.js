@@ -8,7 +8,7 @@ class Diver {
 
   #headOffset = 1.75;
 
-  constructor({ rotation, kickingSpeed, bubbleFrequency }) {
+  constructor({ rotation, kickingSpeed }) {
     this.rotation = rotation;
     this.kickingSpeed = kickingSpeed;
     this.#kickingSpeedScale = kickingSpeed / 1000;

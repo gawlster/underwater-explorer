@@ -2,14 +2,17 @@ class Fish {
   tailFlappingSpeed;
   #tailFlappingSpeedScale;
 
+  tailFlappingAmplitude;
+
   #bodyColor = vec4(1, 0, 0, 1);
   #headColor = vec4(0.5, 0.5, 0.5, 1);
   #eyeColor = vec4(0, 0, 0, 1);
   #pupilColor = vec4(1, 1, 1, 1);
 
-  constructor({ tailFlappingSpeed }) {
+  constructor({ tailFlappingSpeed, tailFlappingAmplitude }) {
     this.tailFlappingSpeed = tailFlappingSpeed;
     this.#tailFlappingSpeedScale = tailFlappingSpeed / 250;
+    this.tailFlappingAmplitude = tailFlappingAmplitude;
   }
 
   draw(dt, timestamp) {
@@ -78,7 +81,14 @@ class Fish {
   }
 
   #drawTail(timestamp) {
-    gRotate(Math.cos(timestamp * this.#tailFlappingSpeedScale) * 30, 0, 1, 0);
+    gRotate(
+      Math.cos(timestamp * this.#tailFlappingSpeedScale) *
+      this.tailFlappingAmplitude *
+      10,
+      0,
+      1,
+      0,
+    );
     {
       gPush();
       gRotate(45, 1, 0, 0);

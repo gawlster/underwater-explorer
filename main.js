@@ -40,10 +40,16 @@ var TIME = 0.0; // Realtime
 var dt = 0.0;
 var prevTime = 0.0;
 var resetTimerFlag = true;
-var animFlag = false;
+var animFlag = true;
 var controller;
 
 let fishRotation = 0;
+
+let ground;
+let rocks;
+let seaweed;
+let fish;
+let diver;
 
 // Setting the colour which is needed during illumination of a surface
 function setColor(c) {
@@ -69,6 +75,56 @@ function setColor(c) {
   );
   gl.uniform1f(gl.getUniformLocation(program, "shininess"), materialShininess);
 }
+
+const getValues = () => {
+  return {
+    seaweed: {
+      length: document.getElementById("seaweed-length-input").value,
+      swaySpeed: document.getElementById("seaweed-swaySpeed-input").value,
+      rotationRandomnessScale: document.getElementById(
+        "seaweed-rotationRandomness-input",
+      ).value,
+      amplitude: document.getElementById("seaweed-amplitude-input").value,
+      strandSize: document.getElementById("seaweed-strandSize-input").value,
+    },
+    diver: {
+      kickingSpeed: document.getElementById("diver-kicking-speed-input").value,
+      rotation: document.getElementById("diver-rotation-input").value,
+    },
+    fish: {
+      tailFlappingSpeed: document.getElementById("fish-tailFlappingSpeed-input")
+        .value,
+      tailFlappingAmplitude: document.getElementById(
+        "fish-tailFlappingAmplitude-input",
+      ).value,
+    },
+  };
+};
+
+const reflowObjects = () => {
+  const {
+    seaweed: {
+      length,
+      swaySpeed,
+      rotationRandomnessScale,
+      amplitude,
+      strandSize,
+    },
+    diver: { kickingSpeed, rotation },
+    fish: { tailFlappingSpeed, tailFlappingAmplitude },
+  } = getValues();
+  ground = new Ground();
+  rocks = new Rocks();
+  seaweed = new Seaweed({
+    length,
+    swaySpeed,
+    rotationRandomnessScale,
+    amplitude,
+    strandSize,
+  });
+  fish = new Fish({ tailFlappingSpeed, tailFlappingAmplitude });
+  diver = new Diver({ kickingSpeed, rotation });
+};
 
 window.onload = function init() {
   canvas = document.getElementById("gl-canvas");
@@ -122,23 +178,33 @@ window.onload = function init() {
   );
   gl.uniform1f(gl.getUniformLocation(program, "shininess"), materialShininess);
 
-  document.getElementById("animToggleButton").onclick = function () {
-    if (animFlag) {
-      animFlag = false;
-    } else {
-      animFlag = true;
-      resetTimerFlag = true;
-      window.requestAnimFrame(render);
-    }
-
-    controller = new CameraController(canvas);
-    controller.onchange = function (xRot, yRot) {
-      RX = xRot;
-      RY = yRot;
-      window.requestAnimFrame(render);
-    };
+  controller = new CameraController(canvas);
+  controller.onchange = function(xRot, yRot) {
+    RX = xRot;
+    RY = yRot;
+    window.requestAnimFrame(render);
   };
 
+  document.querySelectorAll(".selector").forEach((elem) => {
+    elem.addEventListener("input", () => {
+      reflowObjects();
+    });
+  });
+
+  document.getElementById("start-anim").onclick = () => {
+    document.getElementById("stop-anim").style.display = "block";
+    document.getElementById("start-anim").style.display = "none";
+    reflowObjects();
+    animFlag = true;
+    window.requestAnimFrame(render);
+  };
+  document.getElementById("stop-anim").onclick = () => {
+    document.getElementById("start-anim").style.display = "block";
+    document.getElementById("stop-anim").style.display = "none";
+    animFlag = false;
+  };
+
+  reflowObjects();
   render(0);
 };
 
@@ -218,21 +284,6 @@ function gPush() {
   MS.push(modelMatrix);
 }
 
-const ground = new Ground();
-const rocks = new Rocks();
-const seaweed = new Seaweed({
-  length: 10,
-  swaySpeed: 1,
-  rotationRandomnessScale: 0.5,
-  amplitude: 0.5,
-  strandSize: 1,
-});
-const fish = new Fish({ tailFlappingSpeed: 1 });
-const diver = new Diver({
-  rotation: 25,
-  kickingSpeed: 5,
-  bubbleFrequency: 0.5,
-});
 const bubbles = [];
 const currentBubbleGroup = [];
 
@@ -351,7 +402,9 @@ function render(timestamp) {
   }
   gPop();
 
-  window.requestAnimFrame(render);
+  if (animFlag) {
+    window.requestAnimFrame(render);
+  }
 }
 
 function getBubbleGroupOffset() {
@@ -378,19 +431,19 @@ function CameraController(element) {
   this.curY = 0;
 
   // Assign a mouse down handler to the HTML element.
-  element.onmousedown = function (ev) {
+  element.onmousedown = function(ev) {
     controller.dragging = true;
     controller.curX = ev.clientX;
     controller.curY = ev.clientY;
   };
 
   // Assign a mouse up handler to the HTML element.
-  element.onmouseup = function (ev) {
+  element.onmouseup = function(ev) {
     controller.dragging = false;
   };
 
   // Assign a mouse move handler to the HTML element.
-  element.onmousemove = function (ev) {
+  element.onmousemove = function(ev) {
     if (controller.dragging) {
       // Determine how far we have moved since the last mouse move
       // event.

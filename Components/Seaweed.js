@@ -57,8 +57,8 @@ class Seaweed {
   #drawStrand(timestamp, i) {
     gPush();
     gRotate(
-      Math.cos(timestamp * this.#swaySpeedScale - i / 5) * 2.5 +
-        this.#randomRotations[i],
+      Math.cos(timestamp * this.#swaySpeedScale - i / 5) * this.amplitude +
+      this.#randomRotations[i],
       0,
       0,
       1,
