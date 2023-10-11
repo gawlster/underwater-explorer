@@ -211,7 +211,22 @@ main()
     </script>
   </div>
 
-  <h3>Fish</h3>
+  <h2>Fish</h2>
+
+  <div id="fish-swimSpeed">
+    <label for="fish-swimSpeed-input">Fish swim speed</label>
+    <input id="fish-swimSpeed-input" class="selector" type="range" min="1" max="10">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="fish-swimSpeed-value"></p>
+    <script>
+      const inputfss = document.querySelector("#fish-swimSpeed-input")
+      const valuefss = document.querySelector("#fish-swimSpeed-value")
+      valuefss.textContent = inputfss.value
+      inputfss.addEventListener("input", (e) => {
+        valuefss.textContent = inputfss.value
+      })
+    </script>
+  </div>
 
   <div id="fish-tailFlappingSpeed">
     <label for="fish-tailFlappingSpeed-input">Tail flapping speed</label>
@@ -242,6 +257,8 @@ main()
       })
     </script>
   </div>
+
+  <!-- Diver and fish movement speed, bubble frequency and bubble group size -->
 
 
 </body>

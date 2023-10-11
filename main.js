@@ -45,6 +45,8 @@ var controller;
 
 let fishRotation = 0;
 
+let fishSwimSpeed;
+
 let ground;
 let rocks;
 let seaweed;
@@ -76,6 +78,22 @@ function setColor(c) {
   gl.uniform1f(gl.getUniformLocation(program, "shininess"), materialShininess);
 }
 
+const setDefaultValues = () => {
+  document.getElementById("seaweed-length-input").value = 10;
+  document.getElementById("seaweed-swaySpeed-input").value = 2;
+  document.getElementById("seaweed-rotationRandomness-input").value = 0.5;
+  document.getElementById("seaweed-amplitude-input").value = 2.5;
+  document.getElementById("seaweed-strandSize-input").value = 1.25;
+
+  document.getElementById("diver-kicking-speed-input").value = 3;
+  document.getElementById("diver-rotation-input").value = 30;
+
+  document.getElementById("fish-tailFlappingSpeed-input").value = 2;
+  document.getElementById("fish-tailFlappingAmplitude-input").value = 3;
+
+  fishSwimSpeed = 1;
+};
+
 const getValues = () => {
   return {
     seaweed: {
@@ -98,6 +116,9 @@ const getValues = () => {
         "fish-tailFlappingAmplitude-input",
       ).value,
     },
+    globals: {
+      newFishSwimSpeed: document.getElementById("fish-swimSpeed-input").value,
+    },
   };
 };
 
@@ -112,6 +133,7 @@ const reflowObjects = () => {
     },
     diver: { kickingSpeed, rotation },
     fish: { tailFlappingSpeed, tailFlappingAmplitude },
+    globals: { newFishSwimSpeed },
   } = getValues();
   ground = new Ground();
   rocks = new Rocks();
@@ -124,9 +146,12 @@ const reflowObjects = () => {
   });
   fish = new Fish({ tailFlappingSpeed, tailFlappingAmplitude });
   diver = new Diver({ kickingSpeed, rotation });
+
+  fishSwimSpeed = newFishSwimSpeed;
 };
 
 window.onload = function init() {
+  setDefaultValues();
   canvas = document.getElementById("gl-canvas");
 
   gl = WebGLUtils.setupWebGL(canvas);
@@ -179,7 +204,7 @@ window.onload = function init() {
   gl.uniform1f(gl.getUniformLocation(program, "shininess"), materialShininess);
 
   controller = new CameraController(canvas);
-  controller.onchange = function(xRot, yRot) {
+  controller.onchange = function (xRot, yRot) {
     RX = xRot;
     RY = yRot;
     window.requestAnimFrame(render);
@@ -376,7 +401,7 @@ function render(timestamp) {
     gScale(0.4, 0.4, 0.4);
     gTranslate(5, -2, 0);
     fish.draw(dt, timestamp);
-    fishRotation = fishRotation - (45 * dt) / 2;
+    fishRotation = fishRotation - (45 * dt * fishSwimSpeed) / 2;
     gPop();
   }
   gPop();
@@ -431,19 +456,19 @@ function CameraController(element) {
   this.curY = 0;
 
   // Assign a mouse down handler to the HTML element.
-  element.onmousedown = function(ev) {
+  element.onmousedown = function (ev) {
     controller.dragging = true;
     controller.curX = ev.clientX;
     controller.curY = ev.clientY;
   };
 
   // Assign a mouse up handler to the HTML element.
-  element.onmouseup = function(ev) {
+  element.onmouseup = function (ev) {
     controller.dragging = false;
   };
 
   // Assign a mouse move handler to the HTML element.
-  element.onmousemove = function(ev) {
+  element.onmousemove = function (ev) {
     if (controller.dragging) {
       // Determine how far we have moved since the last mouse move
       // event.
