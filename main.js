@@ -80,7 +80,7 @@ function setColor(c) {
 
 const setDefaultValues = () => {
   document.getElementById("seaweed-length-input").value = 10;
-  document.getElementById("seaweed-swaySpeed-input").value = 2;
+  document.getElementById("seaweed-swaySpeed-input").value = 1.25;
   document.getElementById("seaweed-rotationRandomness-input").value = 0.5;
   document.getElementById("seaweed-amplitude-input").value = 2.5;
   document.getElementById("seaweed-strandSize-input").value = 1.25;
@@ -91,7 +91,7 @@ const setDefaultValues = () => {
   document.getElementById("fish-tailFlappingSpeed-input").value = 2;
   document.getElementById("fish-tailFlappingAmplitude-input").value = 3;
 
-  fishSwimSpeed = 1;
+  document.getElementById("fish-swimSpeed-input").value = 1;
 };
 
 const getValues = () => {
