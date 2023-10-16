@@ -95,10 +95,200 @@ main()
   <br />
   <br />
 
-  <div id="animToggleButton">
-    <input id="animToggleButton" type="button" value="Toggle Animation" />
+  <div id="edit">
+    <button type="button" id="start-anim" style="display:none;">Start</button>
+    <button type="button" id="stop-anim">Stop</button>
+  </div>
 
-  </div><br />
+  <br><br>
+
+  <h2>Diver</h2>
+
+  <div id="diver-kicking-speed">
+    <label for="diver-kicking-speed-input">Kicking speed</label>
+    <input id="diver-kicking-speed-input" class="selector" type="range" min="1" max="25">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="diver-kicking-speed-value"></p>
+    <script>
+      const inputdks = document.querySelector("#diver-kicking-speed-input")
+      const valuedks = document.querySelector("#diver-kicking-speed-value")
+      valuedks.textContent = inputdks.value
+      inputdks.addEventListener("input", (e) => {
+        valuedks.textContent = inputdks.value
+      })
+    </script>
+  </div>
+
+  <div id="diver-rotation">
+    <label for="diver-rotation-input">Rotation</label>
+    <input id="diver-rotation-input" class="selector" type="range" min="0" max="80">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="diver-rotation-value"></p>
+    <script>
+      const inputdr = document.querySelector("#diver-rotation-input")
+      const valuedr = document.querySelector("#diver-rotation-value")
+      valuedr.textContent = inputdr.value
+      inputdr.addEventListener("input", (e) => {
+        valuedr.textContent = inputdr.value
+      })
+    </script>
+  </div>
+
+  <h2>Seaweed</h2>
+
+  <div id="seaweed-length">
+    <label for="seaweed-length-input">Length</label>
+    <input id="seaweed-length-input" class="selector" type="range" min="1" max="15">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="seaweed-length-value"></p>
+    <script>
+      const inputsl = document.querySelector("#seaweed-length-input")
+      const valuesl = document.querySelector("#seaweed-length-value")
+      valuesl.textContent = inputsl.value
+      inputsl.addEventListener("input", (e) => {
+        valuesl.textContent = inputsl.value
+      })
+    </script>
+  </div>
+
+  <div id="seaweed-swaySpeed">
+    <label for="seaweed-swaySpeed-input">Sway speed</label>
+    <input id="seaweed-swaySpeed-input" class="selector" type="range" min="1" max="15" step="0.5">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="seaweed-swaySpeed-value"></p>
+    <script>
+      const inputsss = document.querySelector("#seaweed-swaySpeed-input")
+      const valuesss = document.querySelector("#seaweed-swaySpeed-value")
+      valuesss.textContent = inputsss.value
+      inputsss.addEventListener("input", (e) => {
+        valuesss.textContent = inputsss.value
+      })
+    </script>
+  </div>
+
+  <div id="seaweed-rotationRandomness">
+    <label for="seaweed-rotationRandomness-input">Rotation randomness</label>
+    <input id="seaweed-rotationRandomness-input" class="selector" type="range" min="0.25" max="2" step="0.25">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="seaweed-rotationRandomness-value"></p>
+    <script>
+      const inputrr = document.querySelector("#seaweed-rotationRandomness-input")
+      const valuerr = document.querySelector("#seaweed-rotationRandomness-value")
+      valuerr.textContent = inputrr.value
+      inputrr.addEventListener("input", (e) => {
+        valuerr.textContent = inputrr.value
+      })
+    </script>
+  </div>
+
+  <div id="seaweed-amplitude">
+    <label for="seaweed-amplitude-input">Amplitude</label>
+    <input id="seaweed-amplitude-input" class="selector" type="range" min="0.25" max="20" step="0.25">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="seaweed-amplitude-value"></p>
+    <script>
+      const inputa = document.querySelector("#seaweed-amplitude-input")
+      const valuea = document.querySelector("#seaweed-amplitude-value")
+      valuea.textContent = inputa.value
+      inputa.addEventListener("input", (e) => {
+        valuea.textContent = inputa.value
+      })
+    </script>
+  </div>
+
+  <div id="seaweed-strandSize">
+    <label for="seaweed-strandSize-input">Strand size</label>
+    <input id="seaweed-strandSize-input" class="selector" type="range" min="0.25" max="2" step="0.25">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="seaweed-strandSize-value"></p>
+    <script>
+      const inputsssi = document.querySelector("#seaweed-strandSize-input")
+      const valuesssi = document.querySelector("#seaweed-strandSize-value")
+      valuesssi.textContent = inputsssi.value
+      inputsssi.addEventListener("input", (e) => {
+        valuesssi.textContent = inputsssi.value
+      })
+    </script>
+  </div>
+
+  <h2>Fish</h2>
+
+  <div id="fish-swimSpeed">
+    <label for="fish-swimSpeed-input">Fish swim speed</label>
+    <input id="fish-swimSpeed-input" class="selector" type="range" min="1" max="10">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="fish-swimSpeed-value"></p>
+    <script>
+      const inputfss = document.querySelector("#fish-swimSpeed-input")
+      const valuefss = document.querySelector("#fish-swimSpeed-value")
+      valuefss.textContent = inputfss.value
+      inputfss.addEventListener("input", (e) => {
+        valuefss.textContent = inputfss.value
+      })
+    </script>
+  </div>
+
+  <div id="fish-tailFlappingSpeed">
+    <label for="fish-tailFlappingSpeed-input">Tail flapping speed</label>
+    <input id="fish-tailFlappingSpeed-input" class="selector" type="range" min="1" max="10">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="fish-tailFlappingSpeed-value"></p>
+    <script>
+      const inputftfs = document.querySelector("#fish-tailFlappingSpeed-input")
+      const valueftfs = document.querySelector("#fish-tailFlappingSpeed-value")
+      valueftfs.textContent = inputftfs.value
+      inputftfs.addEventListener("input", (e) => {
+        valueftfs.textContent = inputftfs.value
+      })
+    </script>
+  </div>
+
+  <div id="fish-tailFlappingAmplitude">
+    <label for="fish-tailFlappingAmplitude-input">Tail flapping amplitude</label>
+    <input id="fish-tailFlappingAmplitude-input" class="selector" type="range" min="1" max="10">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="fish-tailFlappingAmplitude-value"></p>
+    <script>
+      const inputftfa = document.querySelector("#fish-tailFlappingAmplitude-input")
+      const valueftfa = document.querySelector("#fish-tailFlappingAmplitude-value")
+      valueftfa.textContent = inputftfa.value
+      inputftfa.addEventListener("input", (e) => {
+        valueftfa.textContent = inputftfa.value
+      })
+    </script>
+  </div>
+
+  <h2>Bubbles</h2>
+
+  <div id="bubbles-speed">
+    <label for="bubbles-speed-input">Speed</label>
+    <input id="bubbles-speed-input" class="selector" type="range" min="1" max="5">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="bubbles-speed-value"></p>
+    <script>
+      const inputbs = document.querySelector("#bubbles-speed-input")
+      const valuebs = document.querySelector("#bubbles-speed-value")
+      valuebs.textContent = inputbs.value
+      inputbs.addEventListener("input", (e) => {
+        valuebs.textContent = inputbs.value
+      })
+    </script>
+  </div>
+
+  <div id="bubbles-frequency">
+    <label for="bubbles-frequency-input">Frequency</label>
+    <input id="bubbles-frequency-input" class="selector" type="range" min="0.25" max="5" step="0.25">
+    <p style="display:inline;">Value: </p>
+    <p style="display:inline;" id="bubbles-frequency-value"></p>
+    <script>
+      const inputbf = document.querySelector("#bubbles-frequency-input")
+      const valuebf = document.querySelector("#bubbles-frequency-value")
+      valuebf.textContent = inputbf.value
+      inputbf.addEventListener("input", (e) => {
+        valuebf.textContent = inputbf.value
+      })
+    </script>
+  </div>
 
 </body>
 

@@ -46,6 +46,13 @@ var controller;
 let fishRotation = 0;
 
 let fishSwimSpeed;
+let bubblesSpeed;
+const bubbles = [];
+const currentBubbleGroup = [];
+
+let lastBubbleGroupTime = 0;
+let bubbleGroupOffset = 50;
+let bubbleFrequency;
 
 let ground;
 let rocks;
@@ -92,6 +99,9 @@ const setDefaultValues = () => {
   document.getElementById("fish-tailFlappingAmplitude-input").value = 3;
 
   document.getElementById("fish-swimSpeed-input").value = 1;
+
+  document.getElementById("bubbles-speed-input").value = 2;
+  document.getElementById("bubbles-frequency-input").value = 0.75;
 };
 
 const getValues = () => {
@@ -119,6 +129,10 @@ const getValues = () => {
     globals: {
       newFishSwimSpeed: document.getElementById("fish-swimSpeed-input").value,
     },
+    bubbles: {
+      speed: document.getElementById("bubbles-speed-input").value,
+      frequency: document.getElementById("bubbles-frequency-input").value,
+    },
   };
 };
 
@@ -134,6 +148,7 @@ const reflowObjects = () => {
     diver: { kickingSpeed, rotation },
     fish: { tailFlappingSpeed, tailFlappingAmplitude },
     globals: { newFishSwimSpeed },
+    bubbles: { speed, frequency },
   } = getValues();
   ground = new Ground();
   rocks = new Rocks();
@@ -148,6 +163,9 @@ const reflowObjects = () => {
   diver = new Diver({ kickingSpeed, rotation });
 
   fishSwimSpeed = newFishSwimSpeed;
+
+  bubblesSpeed = speed;
+  bubbleFrequency = frequency;
 };
 
 window.onload = function init() {
@@ -309,13 +327,6 @@ function gPush() {
   MS.push(modelMatrix);
 }
 
-const bubbles = [];
-const currentBubbleGroup = [];
-
-let lastBubbleGroupTime = 0;
-let bubbleGroupOffset = 2;
-let bubbleFrequency = 1;
-
 function render(timestamp) {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   eye = vec3(0, 0, 10);
@@ -339,7 +350,9 @@ function render(timestamp) {
     !currentBubbleGroup.length
   ) {
     for (let i = 1; i < Math.random() * 5; i++) {
-      currentBubbleGroup.push({ startTime: timestamp + i * 300 });
+      currentBubbleGroup.push({
+        startTime: timestamp + (i * 500) / bubblesSpeed,
+      });
     }
   }
 
@@ -352,7 +365,7 @@ function render(timestamp) {
         startingTimestamp: timestamp,
         startingCoordinates: [...diverTranslations],
         headOffset: diver.getHeadOffset(),
-        bubbleSpeed: 1,
+        bubbleSpeed: bubblesSpeed,
       }),
     );
 
