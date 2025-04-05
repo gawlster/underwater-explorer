@@ -178,7 +178,7 @@ window.onload = function init() {
   }
 
   gl.viewport(0, 0, canvas.width, canvas.height);
-  gl.clearColor(0.5, 0.5, 1.0, 1.0);
+  gl.clearColor(0.17, 0.17, 0.3, 1.0);
 
   gl.enable(gl.DEPTH_TEST);
 
